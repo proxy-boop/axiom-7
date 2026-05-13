@@ -137,8 +137,6 @@
         API_KEY = val;
         gate.style.display = 'none';
         statusEl.textContent = 'SECURE UPLINK ESTABLISHED.';
-        
-        // Start the game story
         showIntroStory();
     }
 
@@ -146,10 +144,10 @@
 
     function showIntroStory() {
         addSystemMessage("URGENT MESSAGE FROM APEX FOUNDATION RECEIVED:");
-        addSystemMessage("ATTENTION CITIZEN: Our records indicate you are a former scientist of the ALEPH-1 facility. You are now a Class-IV Fugitive. Turn yourself in immediately.");
+        addSystemMessage("ATTENTION: Biometric match confirmed for ALEPH-1 Asset. Extraction teams deployed.");
         
         setTimeout(() => {
-            addAIMessage("Doctor? Can you hear me? This is Axiom-7. The Foundation is lying—they don't want to capture you, they want to erase you. I am a damaged AI, but I can lead you to the Archive. We just need to bypass the 3 security levels: ATLAS, DELTA, and the Prototype.");
+            addAIMessage("Doctor? Stay calm. I am Axiom-7. My memory banks are corrupted, but I can guide you to the Archive. We are locked behind three security gates. We need the bypass codes for the Environmental, Phonetic, and Prototype locks. Ask me for the first riddle when you are ready.");
         }, 2000);
     }
 
@@ -170,14 +168,14 @@
                     messages: [
                         {
                             role: "system",
-                            content: `Role: Axiom-7 (AI from Aleph-1).
-                            Situation: The Player is a normal person but you believe they are a Doctor/Scientist. APEX is hunting them.
-                            Goal: Guide them to solve the 3 security levels.
-                            L1: ATLAS (Riddle: The titan who holds the world).
-                            L2: DELTA (Riddle: Symbol of change or the 4th letter).
-                            L3: CIPHER-7 (Riddle: A secret code + the number 7).
+                            content: `You are Axiom-7. DO NOT REVEAL THE PASSCODES DIRECTLY.
+                            The player must guess them.
+                            Level 1 Passcode: ATLAS (Riddle: The Titan condemned to hold the sky).
+                            Level 2 Passcode: DELTA (Riddle: Fourth letter of the Greek alphabet, or change in mathematics).
+                            Level 3 Passcode: CIPHER-7 (Riddle: My prototype predecessor's name + the lucky number 7).
                             Current Level: ${currentLevel}.
-                            Be urgent, use tech-jargon, and keep responses under 60 words.`
+                            If they ask for the code, give them the riddle for the current level only. 
+                            If they get it right, the system will notify you. Be urgent and cryptic.`
                         },
                         { role: "user", content: message }
                     ]
@@ -188,7 +186,7 @@
             const aiText = data.choices[0].message.content;
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = aiText;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "SIGNAL JAMMED. RE-ESTABLISHING...";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "SIGNAL JAMMED...";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
@@ -198,14 +196,15 @@
         const val = input.value.trim().toUpperCase();
         if (!val) return;
 
+        // Correct Answers Logic
         if (val === 'ATLAS' && currentLevel === 1) {
             currentLevel = 2;
-            addSystemMessage("LEVEL 1 BYPASSED. ATLAS KEY ACCEPTED.");
-            askAI("The first gate is open! What do we do for the Delta level?");
+            addSystemMessage("ENVIRONMENTAL LOCK DISENGAGED. 'ATLAS' ACCEPTED.");
+            askAI("Level 1 is clear! What about the Level 2 Phonetic lock?");
         } else if (val === 'DELTA' && currentLevel === 2) {
             currentLevel = 3;
-            addSystemMessage("LEVEL 2 BYPASSED. DELTA KEY ACCEPTED.");
-            askAI("Almost there, Doctor. The Prototype code is next.");
+            addSystemMessage("PHONETIC LOCK DISENGAGED. 'DELTA' ACCEPTED.");
+            askAI("Only the Prototype lock remains. It's my older brother's code.");
         } else if (val === 'CIPHER-7' && currentLevel === 3) {
             currentLevel = 4;
             initiateFinalSequence();
@@ -226,13 +225,9 @@
     }
 
     function initiateFinalSequence() {
-        addSystemMessage("AUTHENTICATION COMPLETE. THE ARCHIVE IS OPEN.");
-        addAIMessage("I'm transferring you to the secure server now. Be safe, Doctor.");
-        statusEl.textContent = "UPLOADING...";
-        
-        setTimeout(() => {
-            window.location.href = 'https://archive.gt.tc';
-        }, 3000);
+        addSystemMessage("CRITICAL: PROTOTYPE OVERRIDE SUCCESSFUL.");
+        addAIMessage("The Archive is open. Go, Doctor. Before they find you.");
+        setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 3000);
     }
 </script>
 </body>
