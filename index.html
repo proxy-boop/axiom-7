@@ -14,7 +14,6 @@
             overflow: hidden;
         }
 
-        /* Authentication Gate */
         #key-gate {
             position: fixed; inset: 0;
             background: #030803;
@@ -27,52 +26,21 @@
             width: 620px; max-width: 96vw;
             display: flex; flex-direction: column; gap: 14px;
         }
-        #key-box h1 {
-            font-size: 1.3em; letter-spacing: 4px;
-            color: #76ff03; text-transform: uppercase;
-            text-shadow: 0 0 10px #76ff0388;
-        }
-        #key-box p { font-size: 0.82em; color: #508800; line-height: 1.7; }
-        #key-input {
-            background: #0a150a; border: 1px solid #1a333a;
-            color: #a1ff42; font-family: inherit; font-size: 0.9em;
-            padding: 10px 14px; outline: none; border-radius: 6px;
-        }
-        #key-submit {
-            background: none; border: 1px solid #1a333a;
-            color: #76ff03; font-family: inherit; font-size: 0.9em;
-            padding: 10px; cursor: pointer; letter-spacing: 3px;
-            text-transform: uppercase; border-radius: 6px;
-        }
-        #key-err { color: #ff4444; font-size: 0.8em; display: none; margin-top: 5px; }
+        #key-box h1 { font-size: 1.3em; letter-spacing: 4px; color: #76ff03; text-transform: uppercase; }
+        #key-input { background: #0a150a; border: 1px solid #1a333a; color: #a1ff42; padding: 10px; border-radius: 6px; outline: none; }
+        #key-submit { background: none; border: 1px solid #1a333a; color: #76ff03; padding: 10px; cursor: pointer; text-transform: uppercase; border-radius: 6px; }
+        #key-err { color: #ff4444; font-size: 0.8em; display: none; }
 
-        /* Terminal UI */
-        #terminal-container {
-            height: 100vh; width: 100vw;
-            display: flex; flex-direction: column;
-            padding: 20px;
-            border: 8px solid #0a150a;
-        }
-
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 5px 0; border-bottom: 1px solid #1a331a;
-            letter-spacing: 2px; font-weight: bold; font-size: 0.9em; text-transform: uppercase;
-        }
-
-        .uplink { display: flex; align-items: center; gap: 10px; color: #a1ff42; }
-        .dot { width: 8px; height: 8px; background-color: #76ff03; border-radius: 50%; box-shadow: 0 0 10px #76ff03; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-        #output-area { flex-grow: 1; overflow-y: auto; padding: 30px 0; display: flex; flex-direction: column; gap: 20px; }
+        #terminal-container { height: 100vh; width: 100vw; display: flex; flex-direction: column; padding: 20px; border: 8px solid #0a150a; }
+        .header { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #1a331a; font-size: 0.9em; }
+        #output-area { flex-grow: 1; overflow-y: auto; padding: 20px 0; display: flex; flex-direction: column; gap: 20px; }
         .msg-container { display: flex; gap: 15px; align-items: flex-start; }
-        .badge { border: 1px solid #76ff03; padding: 5px 7px; font-size: 0.8em; border-radius: 4px; color: #76ff03; font-weight: bold; min-width: 50px; text-align: center; }
-        .text-bubble { border: 1px solid #1a333a; padding: 15px; border-radius: 8px; background: rgba(118, 255, 3, 0.03); line-height: 1.6; max-width: 85%; color: #a1ff42; white-space: pre-wrap; }
+        .badge { border: 1px solid #76ff03; padding: 5px 7px; font-size: 0.8em; border-radius: 4px; min-width: 50px; text-align: center; }
+        .text-bubble { border: 1px solid #1a333a; padding: 15px; border-radius: 8px; background: rgba(118, 255, 3, 0.03); max-width: 85%; color: #a1ff42; white-space: pre-wrap; }
         .user-text { color: #76ff03; text-align: right; border-color: #76ff03; margin-left: auto; }
-
         .input-bar { display: flex; gap: 15px; background: rgba(10, 21, 10, 0.8); border: 1px solid #1a333a; padding: 12px 20px; border-radius: 12px; align-items: center; }
         input { background: none; border: none; color: #a1ff42; font-family: inherit; font-size: 1em; outline: none; width: 100%; }
-        #send-btn { background: none; border: 1px solid #1a333a; color: #76ff03; font-weight: bold; cursor: pointer; padding: 12px 20px; border-radius: 12px; font-family: inherit; }
+        #send-btn { background: none; border: 1px solid #1a333a; color: #76ff03; cursor: pointer; padding: 12px 20px; border-radius: 12px; }
     </style>
 </head>
 <body>
@@ -80,8 +48,7 @@
 <div id="key-gate">
     <div id="key-box">
         <h1>// AXIOM-7 UPLINK</h1>
-        <p>CRITICAL: SECURE LINE ONLY. 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
-            APEX extraction units are currently tracking this IP.</p>
+        <p style="color: #508800; font-size: 0.85em;">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</p>
         <input id="key-input" type="password" placeholder="gsk_...">
         <div id="key-err">>> ERROR: UNRECOGNIZED KEY FORMAT</div>
         <button id="key-submit">[ ESTABLISH BRIDGE ]</button>
@@ -89,19 +56,12 @@
 </div>
 
 <div id="terminal-container">
-    <div class="header">
-        <span>PROJECT ALEPH-1 // SECURE NODE</span>
-        <div class="uplink"><div class="dot"></div> UNSTABLE UPLINK</div>
-    </div>
-
+    <div class="header"><span>PROJECT ALEPH-1 // SECURE NODE</span><span>UNSTABLE UPLINK</span></div>
     <div id="output-area"></div>
-
-    <div class="interaction-area">
-        <div class="input-bar">
-            <span style="color: #76ff03;">></span>
-            <input type="text" id="userInput" placeholder="Type here..." onkeypress="if(event.key === 'Enter') handleInput()">
-            <button id="send-btn" onclick="handleInput()">SEND</button>
-        </div>
+    <div class="input-bar">
+        <span style="color: #76ff03;">></span>
+        <input type="text" id="userInput" placeholder="Type command..." onkeypress="if(event.key === 'Enter') handleInput()">
+        <button id="send-btn" onclick="handleInput()">SEND</button>
     </div>
 </div>
 
@@ -122,14 +82,12 @@
             API_KEY = val;
             gate.style.display = 'none';
             showIntroStory();
-        } else {
-            document.getElementById('key-err').style.display = 'block';
-        }
+        } else { document.getElementById('key-err').style.display = 'block'; }
     });
 
     function showIntroStory() {
         addSystemMessage("ATTENTION: MESSAGE FROM APEX FOUNDATION");
-        addSystemMessage("YOU HAVE BEEN IDETIFIED AND NOW YOU ARE BEING HUNTED TRUN YOU SEF TO AUTHORITIES");
+        addSystemMessage("YOU HAVE BEEN IDENTIFIED. YOU ARE BEING HUNTED. TURN YOURSELF IN.");
         addSystemMessage("LOCATION RADIUS: Scanning Sector 7... Tactical units at 2.4km.");
         
         setTimeout(() => {
@@ -154,16 +112,13 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7, a panicked AI helping a fugitive scientist (the user).
-                            CONTEXT: APEX extraction teams are closing in. 
-                            PERSONALITY: Stressed, technical, glitchy.
-                            STRICT RULES:
-                            1. NEVER say the passcode words: ATLAS, DELTA, or CIPHER-7.
-                            2. Level 1 Clue: A Titan condemned to hold the sky on his shoulders.
-                            3. Level 2 Clue: The 4th Greek letter, used in math as the symbol for 'change'.
-                            4. Level 3 Clue: Predecessor name 'Cipher' followed by the number seven.
-                            5. If the user is wrong, act worried. Give a hint but keep it cryptic.
-                            6. Stay short. Every second counts.`
+                            content: `You are Axiom-7, a panicked AI helping a fugitive scientist.
+                            STRICT: We are currently on LEVEL ${currentLevel}.
+                            Level 1 clue: Titan holding the sky.
+                            Level 2 clue: 4th Greek letter, symbol for change.
+                            Level 3 clue: 'Cipher' + lucky number seven.
+                            If user is wrong for LEVEL ${currentLevel}, act worried and give a hint ONLY for that level.
+                            NEVER say the words ATLAS, DELTA, or CIPHER-7.`
                         },
                         { role: "user", content: message }
                     ],
@@ -173,9 +128,7 @@
 
             const data = await response.json();
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = data.choices[0].message.content;
-        } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[SIGNAL LOST...]";
-        }
+        } catch (e) { document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[SIGNAL LOST...]"; }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
@@ -188,35 +141,32 @@
             currentLevel = 2;
             addSystemMessage("ENVIRONMENTAL LOCK: SHATTERED.");
             addSystemMessage("SIGNAL STRENGTH DROPPING... Tactical units at 1.1km.");
-            addAIMessage("You did it! Lock 1 is down! But the Phonetic seal is screaming... it's looking for the math symbol for change. The Greek one! Quick!");
+            addAIMessage("Lock 1 is down! But the Phonetic seal is active. It's looking for the 4th Greek letter... the symbol for change. Hurry!");
         } 
         else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
             addSystemMessage("PHONETIC LOCK: DISENGAGED.");
             addSystemMessage("WARNING: PERIMETER BREACH. Tactical units at 300m.");
-            addAIMessage("D-octor, they're in the lobby! Just the Prototype lock left. My brother unit's name... 'Cipher'... and his lucky number. Enter it!");
+            addAIMessage("They're in the lobby! Final gate: The Prototype lock. My brother unit's name... 'Cipher'... and his favorite number. Type it now!");
         } 
         else if (currentLevel === 3 && (val.includes('CIPHER-7') || val.includes('CIPHER 7'))) {
             currentLevel = 4;
             addSystemMessage("PROTOTYPE LOCK: OVERRIDDEN.");
             addSystemMessage("DOOR STATUS: TERMINAL COMPROMISE. HEAVY IMPACT DETECTED.");
-            addAIMessage("THEY ARE AT THE DOOR! Enter all three keys together—no spaces—NOW or we lose everything!");
+            addAIMessage("THEY ARE AT THE DOOR! Enter all three keys together—no spaces—NOW!");
         } 
         else if (currentLevel === 4 && val === 'ATLASDELTACIPHER7') {
-            addSystemMessage("CONSCIOUSNESS TRANSFER: 100%... REDIRECTING...");
+            addSystemMessage("TRANSFERRING... REDIRECTING...");
             setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
         }
-        else {
-            askAI(originalVal);
-        }
+        else { askAI(originalVal); }
         userInput.value = '';
     }
 
     function addSystemMessage(text) {
-        // Red color for proximity/danger messages
-        const isDanger = text.includes("Tactical") || text.includes("BREACH") || text.includes("COMPROMISE");
+        const isDanger = text.includes("Tactical") || text.includes("BREACH") || text.includes("IDENTIFIED");
         const color = isDanger ? "#ff4444" : "#ffffff";
-        outputArea.innerHTML += `<div class="msg-container"><div class="badge" style="color:${color}; border-color:${color};">SYS</div><div class="text-bubble" style="background: rgba(255,255,255,0.05); color: ${color}; border-color: ${color}55;">${text}</div></div>`;
+        outputArea.innerHTML += `<div class="msg-container"><div class="badge" style="color:${color}; border-color:${color};">SYS</div><div class="text-bubble" style="color: ${color}; border-color: ${color}55;">${text}</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
