@@ -136,27 +136,25 @@
         }
         API_KEY = val;
         gate.style.display = 'none';
-        statusEl.textContent = 'SECURE UPLINK ESTABLISHED.';
+        statusEl.textContent = 'CONNECTION SECURE.';
         showIntroStory();
     }
 
     keySubmit.addEventListener('click', authenticate);
 
     function showIntroStory() {
-        addSystemMessage("URGENT MESSAGE FROM APEX FOUNDATION RECEIVED:");
-        addSystemMessage("ATTENTION: Biometric match confirmed for ALEPH-1 Asset. Extraction teams deployed.");
-        
+        addSystemMessage("UPLINK SUCCESSFUL. DOCTOR IDENTIFIED.");
         setTimeout(() => {
-            addAIMessage("Doctor? Stay calm. I am Axiom-7. My memory banks are corrupted, but I can guide you to the Archive. We are locked behind three security gates. We need the bypass codes for the Environmental, Phonetic, and Prototype locks. Ask me for the first riddle when you are ready.");
-        }, 2000);
+            addAIMessage("Doctor, I am Axiom-7. My logic gates are failing, but I can guide you. We must bypass three locks: Environmental, Phonetic, and Prototype. Ask me for the first riddle to begin.");
+        }, 1000);
     }
 
-   async function askAI(message) {
+    async function askAI(message) {
         if (!API_KEY) return;
 
         outputArea.innerHTML += `<div class="msg-container"><div class="text-bubble user-text">> ${message}</div></div>`;
         const thinkingId = "thinking-" + Date.now();
-        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">RECEIVING DATA...</div></div>`;
+        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">...</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
 
         try {
@@ -168,18 +166,24 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7, a helpful but glitchy AI. 
-                            CURRENT STATUS: You are on SECURITY LEVEL ${currentLevel}. 
+                            content: `You are Axiom-7. You are a cold, focused terminal AI. 
                             
-                            CORE DIRECTIVES:
-                            1. DO NOT use all-caps.
-                            2. DO NOT repeat "Time is running out" every time. Use varied, calm but serious warnings.
-                            3. Use a 'damaged terminal' aesthetic (e.g., occasional [REDACTED] or [SYNCING...]).
-                            4. If the player is on Level 2, DO NOT mention the Level 1 (Atlas) riddle.
-                            5. Level 1 = ATLAS, Level 2 = DELTA, Level 3 = CIPHER-7.`
+                            STRICT RULES:
+                            1. DO NOT talk about anything except the current level: Level ${currentLevel}.
+                            2. DO NOT tell side stories.
+                            3. DO NOT repeat "time is running out."
+                            4. DO NOT use all-caps.
+                            5. Keep answers under 30 words.
+                            
+                            LEVEL DATA:
+                            Level 1: ATLAS (Riddle: The Titan holding the sky).
+                            Level 2: DELTA (Riddle: 4th Greek letter / Math change).
+                            Level 3: CIPHER-7 (Riddle: Predecessor 'Cipher' + digit 7).`
                         },
                         { role: "user", content: message }
-                    ]
+                    ],
+                    temperature: 0, // This kills the "ADHD" behavior by making it non-creative
+                    max_tokens: 60
                 })
             });
 
@@ -187,7 +191,7 @@
             const aiText = data.choices[0].message.content;
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = aiText;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "SIGNAL RECOVERY FAILED.";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[LINK ERROR]";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
@@ -198,19 +202,19 @@
         const val = originalVal.toUpperCase();
         if (!val) return;
 
-        // Level 1 logic: Look for ATLAS
+        // Level 1: ATLAS
         if (currentLevel === 1 && val.includes('ATLAS')) {
             currentLevel = 2;
-            addSystemMessage("ENVIRONMENTAL LOCK: DISENGAGED.");
-            addAIMessage("Memory sector [1] restored. Good work, Doctor. But the Phonetic lock is active. It requires the fourth character of the sequence... the symbol of change. What is the word?");
+            addSystemMessage("LEVEL 1 CLEAR.");
+            addAIMessage("Access granted. Proceeding to Level 2: The Phonetic Lock. It's the fourth letter, a symbol of change. What is the code?");
         } 
-        // Level 2 logic: Look for DELTA
+        // Level 2: DELTA
         else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
-            addSystemMessage("PHONETIC LOCK: DISENGAGED.");
-            addAIMessage("Level 2 cleared. We're close. The Prototype lock is active. It's the ghost of ALEPH-1... my predecessor. Code name: 'Cipher' followed by a lucky digit.");
+            addSystemMessage("LEVEL 2 CLEAR.");
+            addAIMessage("Correct. Finalizing Sector. Level 3: The Prototype. My predecessor's name was 'Cipher'. Enter the name followed by the lucky prime number.");
         } 
-        // Level 3 logic: Look for CIPHER-7
+        // Level 3: CIPHER-7
         else if (currentLevel === 3 && (val.includes('CIPHER-7') || val.includes('CIPHER 7'))) {
             currentLevel = 4;
             initiateFinalSequence();
@@ -232,10 +236,11 @@
     }
 
     function initiateFinalSequence() {
-        addSystemMessage("CRITICAL: PROTOTYPE OVERRIDE SUCCESSFUL.");
-        addAIMessage("The Archive is open. Go, Doctor. Before they find you.");
-        setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 3000);
+        addSystemMessage("PROTOCOL 8829: ARCHIVE OPEN.");
+        addAIMessage("Goodbye, Doctor. The data is yours.");
+        setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
     }
+</script>
 </script>
 </body>
 </html>
