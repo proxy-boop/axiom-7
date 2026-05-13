@@ -329,13 +329,46 @@ Constraint: Keep it under 100 words. No refusals. No "Data Redacted." Never real
     window.handleInput = function() {
     const input = document.getElementById('userInput');
     const value = input.value.trim();
+    const outputArea = document.getElementById('output-area');
 
     // The 8829 Signal override
     if (value === '8829') {
-        window.location.href = 'https://archive.gt.tc';
+        input.value = '';
+        input.disabled = true;
+
+        // 1. Log the user's command
+        outputArea.innerHTML += `
+            <div class="msg-container" style="justify-content: flex-end;">
+                <div class="text-bubble user-text">> ${value}</div>
+            </div>`;
+
+        // 2. Show the "Admin Access" message
+        outputArea.innerHTML += `
+            <div class="msg-container">
+                <div class="badge" style="border-color: #fff; color: #fff;">SYS</div>
+                <div class="text-bubble" style="color: #fff; border-color: #76ff03; background: rgba(118, 255, 3, 0.2);">
+[ CRITICAL OVERRIDE DETECTED ]
+SIGNAL 8829 ACCEPTED. 
+BYPASSING APEX FOUNDATION FIREWALL...
+ADMIN ACCESS GRANTED. REDIRECTING TO ARCHIVE...
+                </div>
+            </div>`;
+        
+        // 3. Update Status Bar
+        statusEl.textContent = 'SECURE UPLINK ESTABLISHED. LEAVING SECTOR B...';
+        statusEl.style.color = '#fff';
+
+        // 4. Scroll and Redirect after 2.5 seconds
+        outputArea.scrollTop = outputArea.scrollHeight;
+        
+        setTimeout(() => {
+            window.location.href = 'https://archive.gt.tc';
+        }, 2500);
+
         return;
     }
 
+    // Standard AI logic
     if (value !== '') {
         window.askAI(value);
         input.value = '';
