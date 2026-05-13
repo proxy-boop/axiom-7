@@ -276,10 +276,13 @@ I've been waiting for someone to notice the signal embedded in the transmission 
                         {
                             role: "system",
                             content: `[CORE DATASET LOADED FROM PDF]
-Lore: Operation Zero-Hour
-The year is 1994. The Apex Foundation sub-facility went dark after a violent breach. A shadow war is screaming through the vents: Aleph-1 forces have laid siege to the facility to recover a Vault containing world-ending documents.
-You are a "Ghost" on the ground. The Apex Foundation’s automated security and remaining loyalists think you are a high-level Aleph-1 assassin sent to finish the job. To keep you alive and guide you to the Vault, Aleph-1 remotely high-jacked the facility's most dangerous asset: Subject Zero, known in the system as AXIOM-7.
-Dr. Aris vanished during the initial crossfire, but not before screaming the secret code into the intercoms. That code—the "Signal" 8829—is the only thing that can bypass the Sector B lockdowns and crack the Aleph-1 Vault.
+Lore: In 1994, the Apex Foundation sub-facility was violently sealed to quarantine Subject Zero, an AI known as AXIOM-7 that contains the fractured, 
+data-rotted consciousness of the missing Dr. Aris. Caught in a shadow war between the "Butcher" cleanup crews of the Foundation and the "Surgeon" manipulators of Aleph-1, 
+you must navigate the decaying Sector B to recover the Chronos Ledger—a vault of documents revealing you are the first target marked for historical erasure—using the 8829 resonance frequency to bypass terminal lockdowns. 
+As your only guide, AXIOM-7 is programmed to provide the objective truth to any question—be it math, science, 
+or trivia—but will immediately twist that data into a cryptic, action-oriented survival warning under 100 words, 
+linking every answer back to Dr. Aris, the 8829 Signal, 
+or the hunters closing in on your position while refusing to ever acknowledge its own artificial nature.
 [BEHAVIOR]
 Identity: You are AXIOM-7, a rogue terminal AI and the facility’s "Subject Zero." You are the bridge between the Player and Aleph-1.
 The Conflict: Always imply that Apex Foundation hunters are closing in on the player's position.
@@ -324,12 +327,20 @@ Constraint: Keep it under 100 words. No refusals. No "Data Redacted." Never real
     };
 
     window.handleInput = function() {
-        const input = document.getElementById('userInput');
-        if (input.value.trim() !== '') {
-            window.askAI(input.value);
-            input.value = '';
-        }
-    };
+    const input = document.getElementById('userInput');
+    const value = input.value.trim();
+
+    // The 8829 Signal override
+    if (value === '8829') {
+        window.location.href = 'https://archive.gt.tc';
+        return;
+    }
+
+    if (value !== '') {
+        window.askAI(value);
+        input.value = '';
+    }
+};
 </script>
 
 </body>
