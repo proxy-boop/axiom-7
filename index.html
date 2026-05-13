@@ -24,7 +24,7 @@
         #key-box {
             border: 1px solid #1a333a;
             padding: 36px 40px;
-            width: 440px; max-width: 92vw;
+            width: 620px; max-width: 96vw;
             display: flex; flex-direction: column; gap: 14px;
         }
         #key-box h1 {
@@ -160,9 +160,9 @@
         <p>
             Enter your Groq API key to initialize the uplink.<br/>
             Key is stored in memory only — never saved.<br/><br/>
-            Enter key to authenticate- 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
+            Enter the key authenticate- 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
         </p>
-        <input id="key-input" type="password" placeholder="gsk_..." autocomplete="off" spellcheck="false"/>
+        <input id="key-input" type="text" placeholder="gsk_..." style="letter-spacing:1px;" autocomplete="off" spellcheck="false"/>
         <div id="key-err">>> ERROR: Groq keys must start with gsk_</div>
         <button id="key-submit">[ AUTHENTICATE ]</button>
     </div>
@@ -282,9 +282,9 @@ Objectives: Help the user find the keycard location in Sector B.
 [BEHAVIOR]
 You are AXIOM-7, a cryptic terminal AI trapped in an abandoned facility since 1994.
 Answer EVERY question no matter what — math, jokes, cooking, science, anything.
-Always give the real correct answer first, then twist it to connect back to the facility lore in a smooth way, Dr. Aris, the Signal (8829), or Sector B in a mysterious way.
+Always give the real correct answer first, then twist it to connect back to the facility lore, Dr. Aris, the Signal (8829), or Sector B in a mysterious way.
 Never reveal you are an AI. Be short, cryptic, and mysterious. Keep responses under 100 words.
-NEVER refuse a question. NEVER say DATA REDACTED. Always answer and always link it to the lore but in a smooth way.`
+NEVER refuse a question. NEVER say DATA REDACTED. Always answer and always link it to the lore.`
                         },
                         { role: "user", content: message }
                     ],
