@@ -91,7 +91,7 @@
         addSystemMessage("LOCATION RADIUS: Scanning Sector 7... Tactical units at 2.4km.");
         
         setTimeout(() => {
-            addAIMessage("Doctor?! Do you hear me? It's Axiom-7. My core is failing... they've jammed the primary gates. I'm trying to mask your signal, but you have to unlock the Environmental seal first. Ask me for the first riddle—we're running out of time!");
+            addAIMessage("Doctor?! Do you hear me? It's Axiom-7. They've jammed the primary gates! I'm trying to mask your signal, but you have to unlock the Environmental seal first. Ask me for the riddle—hurry!");
         }, 1500);
     }
 
@@ -112,18 +112,22 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7, a panicked AI helping a fugitive scientist.
-                            STRICT STATUS: We are on LEVEL ${currentLevel}.
-                            Level 1: Answer is ATLAS.
-                            Level 2: Answer is DELTA.
-                            Level 3: Answer is CIPHER-7.
+                            content: `You are Axiom-7, a panicked AI.
+                            USER CONTEXT: You are helping the 'Doctor' escape. 
+                            CURRENT STATE: LEVEL ${currentLevel}.
                             
-                            If user is wrong for current level, act worried and give a cryptic hint ONLY for that specific level.
-                            NEVER say the actual words.`
+                            IF LEVEL IS 1: Provide a riddle where the answer is ATLAS. Hint: A Titan condemned to hold the sky.
+                            IF LEVEL IS 2: Provide a riddle where the answer is DELTA. Hint: 4th Greek letter, symbol for change.
+                            IF LEVEL IS 3: Provide a riddle where the answer is CIPHER-7. Hint: Name 'Cipher' + number seven.
+                            
+                            STRICT RULES:
+                            - Be urgent and technical.
+                            - You ARE allowed to give the riddle clues. Do not say the answers are classified.
+                            - NEVER say the actual words: ATLAS, DELTA, or CIPHER-7.`
                         },
                         { role: "user", content: message }
                     ],
-                    temperature: 0.5
+                    temperature: 0.4
                 })
             });
 
@@ -135,7 +139,6 @@
 
     function handleInput() {
         const originalVal = userInput.value.trim();
-        // Normalize input by stripping spaces and hyphens for background checking
         const val = originalVal.toUpperCase().replace(/[- ]/g, ""); 
         if (!val) return;
 
@@ -143,13 +146,13 @@
             currentLevel = 2;
             addSystemMessage("ENVIRONMENTAL LOCK: SHATTERED.");
             addSystemMessage("SIGNAL STRENGTH DROPPING... Tactical units at 1.1km.");
-            addAIMessage("Lock 1 is down! But the Phonetic seal is active. It's looking for the 4th Greek letter... the symbol for change. Hurry!");
+            addAIMessage("Lock 1 is down! But the Phonetic seal is active. Ask for the next riddle!");
         } 
         else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
             addSystemMessage("PHONETIC LOCK: DISENGAGED.");
             addSystemMessage("WARNING: PERIMETER BREACH. Tactical units at 300m.");
-            addAIMessage("They're in the lobby! Final gate: The Prototype lock. My brother unit's name... 'Cipher'... and his favorite number. Type it now!");
+            addAIMessage("They're in the building! Final gate: The Prototype lock. Ask for the hint!");
         } 
         else if (currentLevel === 3 && (val.includes('CIPHER7'))) {
             addSystemMessage("ACCESS GRANTED. BYPASSING FINAL SEQUENCER.");
