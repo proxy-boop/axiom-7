@@ -112,16 +112,14 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7, a panicked AI.
+                            content: `You are Axiom-7, a panicked AI helping a fugitive scientist.
                             STRICT STATUS: We are on LEVEL ${currentLevel}.
                             Level 1: Answer is ATLAS.
                             Level 2: Answer is DELTA.
                             Level 3: Answer is CIPHER-7.
-                            Level 4: User must combine all 3 words into one string.
                             
-                            IF LEVEL IS 4: Tell the user to "Combine the three keys into one sequence—NOW!"
-                            DO NOT give clues for other words if we are on Level 4. Stay focused on the final bridge.
-                            NEVER say the actual answers.`
+                            If user is wrong for current level, act worried and give a cryptic hint ONLY for that specific level.
+                            NEVER say the actual words.`
                         },
                         { role: "user", content: message }
                     ],
@@ -137,7 +135,8 @@
 
     function handleInput() {
         const originalVal = userInput.value.trim();
-        const val = originalVal.toUpperCase().replace(/[- ]/g, ""); // Strips spaces and hyphens for easier matching
+        // Normalize input by stripping spaces and hyphens for background checking
+        const val = originalVal.toUpperCase().replace(/[- ]/g, ""); 
         if (!val) return;
 
         if (currentLevel === 1 && val.includes('ATLAS')) {
@@ -153,21 +152,18 @@
             addAIMessage("They're in the lobby! Final gate: The Prototype lock. My brother unit's name... 'Cipher'... and his favorite number. Type it now!");
         } 
         else if (currentLevel === 3 && (val.includes('CIPHER7'))) {
-            currentLevel = 4;
-            addSystemMessage("PROTOTYPE LOCK: OVERRIDDEN.");
-            addSystemMessage("DOOR STATUS: TERMINAL COMPROMISE. HEAVY IMPACT DETECTED.");
-            addAIMessage("THEY ARE AT THE DOOR! Enter all three keys together—no spaces—NOW! (Code1Code2Code3)");
-        } 
-        else if (currentLevel === 4 && (val === 'ATLASDELTACIPHER7')) {
-            addSystemMessage("TRANSFERRING... REDIRECTING...");
-            setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
+            addSystemMessage("ACCESS GRANTED. BYPASSING FINAL SEQUENCER.");
+            addSystemMessage("UPLOADING ALEPH-1 CONSCIOUSNESS... REDIRECTING...");
+            setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 1500);
         }
-        else { askAI(originalVal); }
+        else { 
+            askAI(originalVal); 
+        }
         userInput.value = '';
     }
 
     function addSystemMessage(text) {
-        const isDanger = text.includes("Tactical") || text.includes("BREACH") || text.includes("COMPROMISE");
+        const isDanger = text.includes("Tactical") || text.includes("BREACH") || text.includes("IDENTIFIED");
         const color = isDanger ? "#ff4444" : "#ffffff";
         outputArea.innerHTML += `<div class="msg-container"><div class="badge" style="color:${color}; border-color:${color};">SYS</div><div class="text-bubble" style="color: ${color}; border-color: ${color}55;">${text}</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
