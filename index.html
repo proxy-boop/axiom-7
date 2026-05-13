@@ -151,12 +151,12 @@
         }, 2000);
     }
 
-    async function askAI(message) {
+   async function askAI(message) {
         if (!API_KEY) return;
 
         outputArea.innerHTML += `<div class="msg-container"><div class="text-bubble user-text">> ${message}</div></div>`;
         const thinkingId = "thinking-" + Date.now();
-        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">DECRYPTING...</div></div>`;
+        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">RECEIVING DATA...</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
 
         try {
@@ -168,16 +168,15 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7, a glitchy but helpful AI. 
-                            Current Security Level: ${currentLevel}. 
+                            content: `You are Axiom-7, a helpful but glitchy AI. 
+                            CURRENT STATUS: You are on SECURITY LEVEL ${currentLevel}. 
                             
-                            IMPORTANT RULES:
-                            1. DO NOT reveal the passcode words (ATLAS, DELTA, CIPHER-7) unless the player types them.
-                            2. Be conversational. Do not repeat "Time is running out" in every sentence. 
-                            3. If Level is 1: Give hints about the Titan holding the sky.
-                            4. If Level is 2: Give hints about the 4th Greek letter or mathematical change.
-                            5. If Level is 3: Give hints about a 'Cipher' and the number 7.
-                            6. If the player is stuck, give a creative clue, don't just repeat the riddle.`
+                            CORE DIRECTIVES:
+                            1. DO NOT use all-caps.
+                            2. DO NOT repeat "Time is running out" every time. Use varied, calm but serious warnings.
+                            3. Use a 'damaged terminal' aesthetic (e.g., occasional [REDACTED] or [SYNCING...]).
+                            4. If the player is on Level 2, DO NOT mention the Level 1 (Atlas) riddle.
+                            5. Level 1 = ATLAS, Level 2 = DELTA, Level 3 = CIPHER-7.`
                         },
                         { role: "user", content: message }
                     ]
@@ -188,37 +187,36 @@
             const aiText = data.choices[0].message.content;
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = aiText;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "SIGNAL LOSS...";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "SIGNAL RECOVERY FAILED.";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
     function handleInput() {
         const input = document.getElementById('userInput');
-        const originalValue = input.value.trim();
-        const val = originalValue.toUpperCase();
+        const originalVal = input.value.trim();
+        const val = originalVal.toUpperCase();
         if (!val) return;
 
-        // Level 1 Logic
-        if (val.includes('ATLAS') && currentLevel === 1) {
+        // Level 1 logic: Look for ATLAS
+        if (currentLevel === 1 && val.includes('ATLAS')) {
             currentLevel = 2;
-            addSystemMessage("ENVIRONMENTAL LOCK DISENGAGED. ACCESSING LEVEL 2...");
-            addAIMessage("Excellent work, Doctor. Level 1 is open. But the Phonetic lock is active now. It's something mathematical... or perhaps linguistic? What is the fourth letter?");
+            addSystemMessage("ENVIRONMENTAL LOCK: DISENGAGED.");
+            addAIMessage("Memory sector [1] restored. Good work, Doctor. But the Phonetic lock is active. It requires the fourth character of the sequence... the symbol of change. What is the word?");
         } 
-        // Level 2 Logic
-        else if (val.includes('DELTA') && currentLevel === 2) {
+        // Level 2 logic: Look for DELTA
+        else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
-            addSystemMessage("PHONETIC LOCK DISENGAGED. ACCESSING FINAL GATE...");
-            addAIMessage("You still have it, Doctor! Level 2 is down. Now, the final one. The Prototype. It uses a specific naming convention: a word for a secret code, followed by the luckiest prime number.");
+            addSystemMessage("PHONETIC LOCK: DISENGAGED.");
+            addAIMessage("Level 2 cleared. We're close. The Prototype lock is active. It's the ghost of ALEPH-1... my predecessor. Code name: 'Cipher' followed by a lucky digit.");
         } 
-        // Level 3 Logic
-        else if ((val.includes('CIPHER-7') || val.includes('CIPHER 7')) && currentLevel === 3) {
+        // Level 3 logic: Look for CIPHER-7
+        else if (currentLevel === 3 && (val.includes('CIPHER-7') || val.includes('CIPHER 7'))) {
             currentLevel = 4;
             initiateFinalSequence();
         } 
-        // Normal Chat
         else {
-            askAI(originalValue);
+            askAI(originalVal);
         }
         input.value = '';
     }
