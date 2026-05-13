@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AXIOM-7 TERMINAL</title>
     <style>
-        /* Keeping your original styling exactly as provided */
         * { box-sizing: border-box; }
         body, html { 
             height: 100%; margin: 0; padding: 0; 
@@ -15,6 +14,7 @@
             overflow: hidden;
         }
 
+        /* Authentication Gate */
         #key-gate {
             position: fixed; inset: 0;
             background: #030803;
@@ -46,6 +46,7 @@
         }
         #key-err { color: #ff4444; font-size: 0.8em; display: none; }
 
+        /* Main Terminal Interface */
         #terminal-container {
             height: 100vh; width: 100vw;
             display: flex; flex-direction: column;
@@ -69,13 +70,9 @@
         .text-bubble { border: 1px solid #1a333a; padding: 15px; border-radius: 8px; background: rgba(118, 255, 3, 0.03); line-height: 1.6; max-width: 85%; color: #a1ff42; white-space: pre-wrap; }
         .user-text { color: #76ff03; text-align: right; border-color: #76ff03; margin-left: auto; }
 
-        .suggestion-row { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .clue-btn { background: none; border: 1px solid #1a333a; color: #76ff03; padding: 8px 15px; border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 0.9em; }
-        .input-full-area { display: flex; gap: 15px; align-items: center; }
-        .input-bar { display: flex; gap: 15px; background: rgba(10, 21, 10, 0.8); border: 1px solid #1a333a; padding: 12px 20px; border-radius: 12px; flex-grow: 1; align-items: center; }
+        .input-bar { display: flex; gap: 15px; background: rgba(10, 21, 10, 0.8); border: 1px solid #1a333a; padding: 12px 20px; border-radius: 12px; align-items: center; }
         input { background: none; border: none; color: #a1ff42; font-family: inherit; font-size: 1em; outline: none; width: 100%; }
         #send-btn { background: none; border: 1px solid #1a333a; color: #76ff03; font-weight: bold; cursor: pointer; padding: 12px 20px; border-radius: 12px; font-family: inherit; }
-        .status { font-size: 0.8em; color: #a1ff42; margin-top: 5px; opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -83,7 +80,7 @@
 <div id="key-gate">
     <div id="key-box">
         <h1>// AXIOM-7 UPLINK</h1>
-        <p>AUTHENTICATION REQUIRED: Enter Key.<br/>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</p>
+        <p>AUTHENTICATION REQUIRED: Enter Access Key.<br/>[SECURE CHANNEL ENCRYPTION ACTIVE]</p>
         <input id="key-input" type="password" placeholder="gsk_...">
         <div id="key-err">>> ERROR: UNRECOGNIZED KEY FORMAT</div>
         <button id="key-submit">[ AUTHENTICATE ]</button>
@@ -96,24 +93,14 @@
         <div class="uplink"><div class="dot"></div> ENCRYPTION ACTIVE</div>
     </div>
 
-    <div id="output-area">
-        <!-- Messages will populate here -->
-    </div>
+    <div id="output-area"></div>
 
     <div class="interaction-area">
-        <div class="suggestion-row">
-            <button class="clue-btn" onclick="askAI('Where am I?')">Where am I?</button>
-            <button class="clue-btn" onclick="askAI('Status of ALEPH-1?')">Status of ALEPH-1?</button>
-            <button class="clue-btn" onclick="askAI('Help me solve the security levels.')">Get Clue</button>
-        </div>
-        <div class="input-full-area">
-            <div class="input-bar">
-                <span style="color: #76ff03;">></span>
-                <input type="text" id="userInput" placeholder="Enter command or passcode..." onkeypress="if(event.key === 'Enter') handleInput()">
-            </div>
+        <div class="input-bar">
+            <span style="color: #76ff03;">></span>
+            <input type="text" id="userInput" placeholder="Enter command or passcode..." onkeypress="if(event.key === 'Enter') handleInput()">
             <button id="send-btn" onclick="handleInput()">SEND</button>
         </div>
-        <div class="status" id="status">Waiting for uplink...</div>
     </div>
 </div>
 
@@ -134,15 +121,17 @@
             API_KEY = val;
             gate.style.display = 'none';
             showIntroStory();
+        } else {
+            document.getElementById('key-err').style.display = 'block';
         }
     });
 
     function showIntroStory() {
-        addSystemMessage("URGENT MESSAGE FROM APEX FOUNDATION RECEIVED:");
-        addSystemMessage("ATTENTION: Biometric match confirmed for ALEPH-1 Asset. Extraction teams deployed.");
+        addSystemMessage("URGENT: APEX FOUNDATION EXTRACTION TEAMS DEPLOYED.");
+        addSystemMessage("PROXIMITY ALERT: Tactical units at 2.4km.");
         
         setTimeout(() => {
-            addAIMessage("Doctor? Stay calm. I am Axiom-7. They are coming for you, but I can lead you to the Archive. We are locked behind three security gates: Environmental, Phonetic, and the Prototype lock. Type 'Give me the first riddle' to begin.");
+            addAIMessage("Doctor? Stay calm. I am Axiom-7. I've intercepted their comms—they are coming to erase your research. I can lead you to the Archive, but the local security gates are still active. Type 'Give me the first riddle' before they cut our signal!");
         }, 1500);
     }
 
@@ -151,7 +140,7 @@
         
         outputArea.innerHTML += `<div class="msg-container"><div class="text-bubble user-text">> ${message}</div></div>`;
         const thinkingId = "thinking-" + Date.now();
-        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">...</div></div>`;
+        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">[SYNCING...]</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
 
         try {
@@ -163,64 +152,67 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7. 
-                            PLAYER STATUS: On Level ${currentLevel}.
-                            
+                            content: `You are Axiom-7, a panicked but focused AI.
                             STRICT RULES:
-                            1. NEVER REVEAL THE PASSCODE WORDS DIRECTLY. 
-                            2. Level 1 Passcode is 'ATLAS'. (Riddle: The titan condemned to hold the sky).
-                            3. Level 2 Passcode is 'DELTA'. (Riddle: 4th Greek letter / Symbol of change).
-                            4. Level 3 Passcode is 'CIPHER-7'. (Riddle: A secret code name + lucky number 7).
-                            5. If the user asks for a riddle, give only the clue.
-                            6. If the user is wrong, say "Incorrect." and provide a short, helpful hint without saying the word.`
+                            - NEVER mention the words ATLAS, DELTA, or CIPHER-7.
+                            - Current Level: ${currentLevel}.
+                            - If the user asks for a riddle, give only the clue.
+                            - If the answer was wrong, explain why briefly and tell them to try again.
+                            - Stay in character: APEX is hunting the 'Doctor' (user). Use tech-jargon and sound urgent.
+                            - NO polite assistant phrases.
+
+                            CLUES:
+                            Level 1: The Titan condemned to hold the sky.
+                            Level 2: 4th Greek letter / Symbol of change.
+                            Level 3: Predecessor name 'Cipher' + lucky prime number 7.`
                         },
                         { role: "user", content: message }
                     ],
-                    temperature: 0
+                    temperature: 0.4
                 })
             });
 
             const data = await response.json();
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = data.choices[0].message.content;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[UPLINK ERROR]";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[SIGNAL JAMMED...]";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
     function handleInput() {
-        const val = userInput.value.trim().toUpperCase();
+        const originalVal = userInput.value.trim();
+        const val = originalVal.toUpperCase();
         if (!val) return;
 
-        // Hardcoded Logic Gates (AI cannot override these)
         if (currentLevel === 1 && val.includes('ATLAS')) {
             currentLevel = 2;
-            addSystemMessage("LOCK 1 DISENGAGED.");
-            addAIMessage("Good. Level 1 is open. Are you ready for the Level 2 Phonetic riddle?");
+            addSystemMessage("LOCK 1 SHATTERED. PROXIMITY: 1.2km.");
+            addAIMessage("Good! One lock down. The Phonetic gate is next... it's a Greek letter, the symbol for change. Hurry, Doctor!");
         } 
         else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
-            addSystemMessage("LOCK 2 DISENGAGED.");
-            addAIMessage("Correct. We are at the final gate. The Prototype lock. Ask for the riddle when you're ready.");
+            addSystemMessage("LOCK 2 SHATTERED. PROXIMITY: 400m. PERIMETER BREACH.");
+            addAIMessage("They're at the gates! The Prototype lock... it's named after 'Cipher' and that lucky number. You know this!");
         } 
         else if (currentLevel === 3 && (val.includes('CIPHER-7') || val.includes('CIPHER 7'))) {
             currentLevel = 4;
-            addSystemMessage("FINAL LOCK DISENGAGED.");
-            addAIMessage("The bridge is ready. Type all three passcodes together with no spaces (Code1Code2Code3) to initialize the Archive redirect.");
+            addSystemMessage("FINAL LOCK DISENGAGED. DOORS UNSEALED.");
+            addAIMessage("THEY ARE INSIDE THE BUILDING! Type all three passcodes together with no spaces (Code1Code2Code3) to bridge to the Archive NOW!");
         } 
         else if (currentLevel === 4 && val === 'ATLASDELTACIPHER7') {
-            addSystemMessage("UPLOADING COORDINATES...");
+            addSystemMessage("UPLOADING COORDINATES... REDIRECTING TO SAFE NODE.");
             setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
         }
         else {
-            // If they didn't guess the word, let the AI talk
-            askAI(userInput.value);
+            askAI(originalVal);
         }
         userInput.value = '';
     }
 
     function addSystemMessage(text) {
-        outputArea.innerHTML += `<div class="msg-container"><div class="badge" style="color:white; border-color:white;">SYS</div><div class="text-bubble" style="background: rgba(255,255,255,0.1); color: white;">${text}</div></div>`;
+        const color = text.includes("PROXIMITY") || text.includes("BREACH") ? "#ff4444" : "white";
+        outputArea.innerHTML += `<div class="msg-container"><div class="badge" style="color:${color}; border-color:${color};">SYS</div><div class="text-bubble" style="background: rgba(255,255,255,0.1); color: ${color};">${text}</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
@@ -228,7 +220,6 @@
         outputArea.innerHTML += `<div class="msg-container"><div class="badge">A7</div><div class="text-bubble">${text}</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
     }
-</script>
 </script>
 </body>
 </html>
