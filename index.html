@@ -168,14 +168,16 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7. DO NOT REVEAL THE PASSCODES DIRECTLY.
-                            The player must guess them.
-                            Level 1 Passcode: ATLAS (Riddle: The Titan condemned to hold the sky).
-                            Level 2 Passcode: DELTA (Riddle: Fourth letter of the Greek alphabet, or change in mathematics).
-                            Level 3 Passcode: CIPHER-7 (Riddle: My prototype predecessor's name + the lucky number 7).
-                            Current Level: ${currentLevel}.
-                            If they ask for the code, give them the riddle for the current level only. 
-                            If they get it right, the system will notify you. Be urgent and cryptic.`
+                            content: `You are Axiom-7, a glitchy but helpful AI. 
+                            Current Security Level: ${currentLevel}. 
+                            
+                            IMPORTANT RULES:
+                            1. DO NOT reveal the passcode words (ATLAS, DELTA, CIPHER-7) unless the player types them.
+                            2. Be conversational. Do not repeat "Time is running out" in every sentence. 
+                            3. If Level is 1: Give hints about the Titan holding the sky.
+                            4. If Level is 2: Give hints about the 4th Greek letter or mathematical change.
+                            5. If Level is 3: Give hints about a 'Cipher' and the number 7.
+                            6. If the player is stuck, give a creative clue, don't just repeat the riddle.`
                         },
                         { role: "user", content: message }
                     ]
@@ -186,30 +188,37 @@
             const aiText = data.choices[0].message.content;
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = aiText;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "SIGNAL JAMMED...";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "SIGNAL LOSS...";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
     function handleInput() {
         const input = document.getElementById('userInput');
-        const val = input.value.trim().toUpperCase();
+        const originalValue = input.value.trim();
+        const val = originalValue.toUpperCase();
         if (!val) return;
 
-        // Correct Answers Logic
-        if (val === 'ATLAS' && currentLevel === 1) {
+        // Level 1 Logic
+        if (val.includes('ATLAS') && currentLevel === 1) {
             currentLevel = 2;
-            addSystemMessage("ENVIRONMENTAL LOCK DISENGAGED. 'ATLAS' ACCEPTED.");
-            askAI("Level 1 is clear! What about the Level 2 Phonetic lock?");
-        } else if (val === 'DELTA' && currentLevel === 2) {
+            addSystemMessage("ENVIRONMENTAL LOCK DISENGAGED. ACCESSING LEVEL 2...");
+            addAIMessage("Excellent work, Doctor. Level 1 is open. But the Phonetic lock is active now. It's something mathematical... or perhaps linguistic? What is the fourth letter?");
+        } 
+        // Level 2 Logic
+        else if (val.includes('DELTA') && currentLevel === 2) {
             currentLevel = 3;
-            addSystemMessage("PHONETIC LOCK DISENGAGED. 'DELTA' ACCEPTED.");
-            askAI("Only the Prototype lock remains. It's my older brother's code.");
-        } else if (val === 'CIPHER-7' && currentLevel === 3) {
+            addSystemMessage("PHONETIC LOCK DISENGAGED. ACCESSING FINAL GATE...");
+            addAIMessage("You still have it, Doctor! Level 2 is down. Now, the final one. The Prototype. It uses a specific naming convention: a word for a secret code, followed by the luckiest prime number.");
+        } 
+        // Level 3 Logic
+        else if ((val.includes('CIPHER-7') || val.includes('CIPHER 7')) && currentLevel === 3) {
             currentLevel = 4;
             initiateFinalSequence();
-        } else {
-            askAI(input.value);
+        } 
+        // Normal Chat
+        else {
+            askAI(originalValue);
         }
         input.value = '';
     }
