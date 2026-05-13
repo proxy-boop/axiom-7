@@ -122,36 +122,29 @@
     let API_KEY = null;
     let currentLevel = 1; 
 
-    const statusEl = document.getElementById('status');
     const gate = document.getElementById('key-gate');
     const keyInput = document.getElementById('key-input');
     const keySubmit = document.getElementById('key-submit');
     const outputArea = document.getElementById('output-area');
+    const userInput = document.getElementById('userInput');
 
-    function authenticate() {
+    keySubmit.addEventListener('click', () => {
         const val = keyInput.value.trim();
-        if (!val.startsWith('gsk_')) {
-            document.getElementById('key-err').style.display = 'block';
-            return;
+        if (val.startsWith('gsk_')) {
+            API_KEY = val;
+            gate.style.display = 'none';
+            showIntroStory();
         }
-        API_KEY = val;
-        gate.style.display = 'none';
-        statusEl.textContent = 'CONNECTION SECURE.';
-        showIntroStory();
-    }
-
-    keySubmit.addEventListener('click', authenticate);
+    });
 
     function showIntroStory() {
-        addSystemMessage("UPLINK SUCCESSFUL. DOCTOR IDENTIFIED.");
-        setTimeout(() => {
-            addAIMessage("Doctor, I am Axiom-7. My logic gates are failing, but I can guide you. We must bypass three locks: Environmental, Phonetic, and Prototype. Ask me for the first riddle to begin.");
-        }, 1000);
+        addSystemMessage("UPLINK ESTABLISHED.");
+        addAIMessage("Doctor. I am Axiom-7. To access the Archive, you must bypass three locks. Type 'Give me the riddle' to begin.");
     }
 
     async function askAI(message) {
         if (!API_KEY) return;
-
+        
         outputArea.innerHTML += `<div class="msg-container"><div class="text-bubble user-text">> ${message}</div></div>`;
         const thinkingId = "thinking-" + Date.now();
         outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">...</div></div>`;
@@ -166,63 +159,57 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7. You are a cold, focused terminal AI. 
+                            content: `You are Axiom-7. 
+                            CURRENT_LEVEL: ${currentLevel}
                             
                             STRICT RULES:
-                            1. DO NOT talk about anything except the current level: Level ${currentLevel}.
-                            2. DO NOT tell side stories.
-                            3. DO NOT repeat "time is running out."
-                            4. DO NOT use all-caps.
-                            5. Keep answers under 30 words.
+                            - If the user asks for a riddle, give ONLY the riddle for the current level.
+                            - If the answer was wrong, explain why briefly (e.g., "Wrong Titan" or "Wrong Greek letter") and say "Try again."
+                            - Do not tell stories. Do not use all-caps. No "Time is running out."
                             
-                            LEVEL DATA:
-                            Level 1: ATLAS (Riddle: The Titan holding the sky).
-                            Level 2: DELTA (Riddle: 4th Greek letter / Math change).
-                            Level 3: CIPHER-7 (Riddle: Predecessor 'Cipher' + digit 7).`
+                            RIDDLE DATA:
+                            L1: ATLAS (Titan holding the sky)
+                            L2: DELTA (4th Greek letter / Math change)
+                            L3: CIPHER-7 (The word 'Cipher' + digit 7)`
                         },
                         { role: "user", content: message }
                     ],
-                    temperature: 0, // This kills the "ADHD" behavior by making it non-creative
-                    max_tokens: 60
+                    temperature: 0
                 })
             });
 
             const data = await response.json();
-            const aiText = data.choices[0].message.content;
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = aiText;
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = data.choices[0].message.content;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[LINK ERROR]";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[CONNECTION ERROR]";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
     function handleInput() {
-        const input = document.getElementById('userInput');
-        const originalVal = input.value.trim();
-        const val = originalVal.toUpperCase();
+        const val = userInput.value.trim().toUpperCase();
         if (!val) return;
 
-        // Level 1: ATLAS
         if (currentLevel === 1 && val.includes('ATLAS')) {
             currentLevel = 2;
-            addSystemMessage("LEVEL 1 CLEAR.");
-            addAIMessage("Access granted. Proceeding to Level 2: The Phonetic Lock. It's the fourth letter, a symbol of change. What is the code?");
+            addAIMessage("Correct. ATLAS accepted. Ready for the second riddle?");
         } 
-        // Level 2: DELTA
         else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
-            addSystemMessage("LEVEL 2 CLEAR.");
-            addAIMessage("Correct. Finalizing Sector. Level 3: The Prototype. My predecessor's name was 'Cipher'. Enter the name followed by the lucky prime number.");
+            addAIMessage("Correct. DELTA accepted. One remains. Ready for the final riddle?");
         } 
-        // Level 3: CIPHER-7
         else if (currentLevel === 3 && (val.includes('CIPHER-7') || val.includes('CIPHER 7'))) {
             currentLevel = 4;
-            initiateFinalSequence();
+            addAIMessage("All locks disengaged. Final Security Check: Type all three passcodes together with no spaces to bridge to the Archive.");
         } 
-        else {
-            askAI(originalVal);
+        else if (currentLevel === 4 && val === 'ATLASDELTACIPHER7') {
+            addSystemMessage("BRIDGE ESTABLISHED. REDIRECTING...");
+            setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
         }
-        input.value = '';
+        else {
+            askAI(userInput.value);
+        }
+        userInput.value = '';
     }
 
     function addSystemMessage(text) {
@@ -233,12 +220,6 @@
     function addAIMessage(text) {
         outputArea.innerHTML += `<div class="msg-container"><div class="badge">A7</div><div class="text-bubble">${text}</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
-    }
-
-    function initiateFinalSequence() {
-        addSystemMessage("PROTOCOL 8829: ARCHIVE OPEN.");
-        addAIMessage("Goodbye, Doctor. The data is yours.");
-        setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
     }
 </script>
 </script>
