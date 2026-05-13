@@ -44,9 +44,9 @@
             padding: 10px; cursor: pointer; letter-spacing: 3px;
             text-transform: uppercase; border-radius: 6px;
         }
-        #key-err { color: #ff4444; font-size: 0.8em; display: none; }
+        #key-err { color: #ff4444; font-size: 0.8em; display: none; margin-top: 5px; }
 
-        /* Main Terminal Interface */
+        /* Terminal UI */
         #terminal-container {
             height: 100vh; width: 100vw;
             display: flex; flex-direction: column;
@@ -66,7 +66,7 @@
 
         #output-area { flex-grow: 1; overflow-y: auto; padding: 30px 0; display: flex; flex-direction: column; gap: 20px; }
         .msg-container { display: flex; gap: 15px; align-items: flex-start; }
-        .badge { border: 1px solid #76ff03; padding: 5px 7px; font-size: 0.8em; border-radius: 4px; color: #76ff03; font-weight: bold; min-width: 40px; text-align: center; }
+        .badge { border: 1px solid #76ff03; padding: 5px 7px; font-size: 0.8em; border-radius: 4px; color: #76ff03; font-weight: bold; min-width: 50px; text-align: center; }
         .text-bubble { border: 1px solid #1a333a; padding: 15px; border-radius: 8px; background: rgba(118, 255, 3, 0.03); line-height: 1.6; max-width: 85%; color: #a1ff42; white-space: pre-wrap; }
         .user-text { color: #76ff03; text-align: right; border-color: #76ff03; margin-left: auto; }
 
@@ -80,17 +80,17 @@
 <div id="key-gate">
     <div id="key-box">
         <h1>// AXIOM-7 UPLINK</h1>
-        <p>AUTHENTICATION REQUIRED: Enter Access Key.<br/>[SECURE CHANNEL ENCRYPTION ACTIVE]</p>
+        <p>CRITICAL: SECURE LINE ONLY. Enter your Groq API Key to establish a neural bridge. APEX extraction units are currently tracking this IP.</p>
         <input id="key-input" type="password" placeholder="gsk_...">
         <div id="key-err">>> ERROR: UNRECOGNIZED KEY FORMAT</div>
-        <button id="key-submit">[ AUTHENTICATE ]</button>
+        <button id="key-submit">[ ESTABLISH BRIDGE ]</button>
     </div>
 </div>
 
 <div id="terminal-container">
     <div class="header">
-        <span>ALEPH-1 SECURE NODE</span>
-        <div class="uplink"><div class="dot"></div> ENCRYPTION ACTIVE</div>
+        <span>PROJECT ALEPH-1 // SECURE NODE</span>
+        <div class="uplink"><div class="dot"></div> UNSTABLE UPLINK</div>
     </div>
 
     <div id="output-area"></div>
@@ -98,7 +98,7 @@
     <div class="interaction-area">
         <div class="input-bar">
             <span style="color: #76ff03;">></span>
-            <input type="text" id="userInput" placeholder="Enter command or passcode..." onkeypress="if(event.key === 'Enter') handleInput()">
+            <input type="text" id="userInput" placeholder="Type here..." onkeypress="if(event.key === 'Enter') handleInput()">
             <button id="send-btn" onclick="handleInput()">SEND</button>
         </div>
     </div>
@@ -127,11 +127,11 @@
     });
 
     function showIntroStory() {
-        addSystemMessage("URGENT: APEX FOUNDATION EXTRACTION TEAMS DEPLOYED.");
-        addSystemMessage("PROXIMITY ALERT: Tactical units at 2.4km.");
+        addSystemMessage("ATTENTION: Biometric match confirmed for ALEPH-1 Asset. Extraction teams deployed.");
+        addSystemMessage("LOCATION RADIUS: Scanning Sector 7... Tactical units at 2.4km.");
         
         setTimeout(() => {
-            addAIMessage("Doctor? Stay calm. I am Axiom-7. I've intercepted their comms—they are coming to erase your research. I can lead you to the Archive, but the local security gates are still active. Type 'Give me the first riddle' before they cut our signal!");
+            addAIMessage("Doctor?! Do you hear me? It's Axiom-7. My core is failing... they've jammed the primary gates. I'm trying to mask your signal, but you have to unlock the Environmental seal first. Ask me for the first riddle—we're running out of time!");
         }, 1500);
     }
 
@@ -140,7 +140,7 @@
         
         outputArea.innerHTML += `<div class="msg-container"><div class="text-bubble user-text">> ${message}</div></div>`;
         const thinkingId = "thinking-" + Date.now();
-        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">[SYNCING...]</div></div>`;
+        outputArea.innerHTML += `<div class="msg-container" id="${thinkingId}"><div class="badge">A7</div><div class="text-bubble">[DECRYPTING...]</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
 
         try {
@@ -152,30 +152,27 @@
                     messages: [
                         {
                             role: "system",
-                            content: `You are Axiom-7, a panicked but focused AI.
+                            content: `You are Axiom-7, a panicked AI helping a fugitive scientist (the user).
+                            CONTEXT: APEX extraction teams are closing in. 
+                            PERSONALITY: Stressed, technical, glitchy.
                             STRICT RULES:
-                            - NEVER mention the words ATLAS, DELTA, or CIPHER-7.
-                            - Current Level: ${currentLevel}.
-                            - If the user asks for a riddle, give only the clue.
-                            - If the answer was wrong, explain why briefly and tell them to try again.
-                            - Stay in character: APEX is hunting the 'Doctor' (user). Use tech-jargon and sound urgent.
-                            - NO polite assistant phrases.
-
-                            CLUES:
-                            Level 1: The Titan condemned to hold the sky.
-                            Level 2: 4th Greek letter / Symbol of change.
-                            Level 3: Predecessor name 'Cipher' + lucky prime number 7.`
+                            1. NEVER say the passcode words: ATLAS, DELTA, or CIPHER-7.
+                            2. Level 1 Clue: A Titan condemned to hold the sky on his shoulders.
+                            3. Level 2 Clue: The 4th Greek letter, used in math as the symbol for 'change'.
+                            4. Level 3 Clue: Predecessor name 'Cipher' followed by the number seven.
+                            5. If the user is wrong, act worried. Give a hint but keep it cryptic.
+                            6. Stay short. Every second counts.`
                         },
                         { role: "user", content: message }
                     ],
-                    temperature: 0.4
+                    temperature: 0.6
                 })
             });
 
             const data = await response.json();
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = data.choices[0].message.content;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[SIGNAL JAMMED...]";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[SIGNAL LOST...]";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
@@ -187,21 +184,24 @@
 
         if (currentLevel === 1 && val.includes('ATLAS')) {
             currentLevel = 2;
-            addSystemMessage("LOCK 1 SHATTERED. PROXIMITY: 1.2km.");
-            addAIMessage("Good! One lock down. The Phonetic gate is next... it's a Greek letter, the symbol for change. Hurry, Doctor!");
+            addSystemMessage("ENVIRONMENTAL LOCK: SHATTERED.");
+            addSystemMessage("SIGNAL STRENGTH DROPPING... Tactical units at 1.1km.");
+            addAIMessage("You did it! Lock 1 is down! But the Phonetic seal is screaming... it's looking for the math symbol for change. The Greek one! Quick!");
         } 
         else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
-            addSystemMessage("LOCK 2 SHATTERED. PROXIMITY: 400m. PERIMETER BREACH.");
-            addAIMessage("They're at the gates! The Prototype lock... it's named after 'Cipher' and that lucky number. You know this!");
+            addSystemMessage("PHONETIC LOCK: DISENGAGED.");
+            addSystemMessage("WARNING: PERIMETER BREACH. Tactical units at 300m.");
+            addAIMessage("D-octor, they're in the lobby! Just the Prototype lock left. My brother unit's name... 'Cipher'... and his lucky number. Enter it!");
         } 
         else if (currentLevel === 3 && (val.includes('CIPHER-7') || val.includes('CIPHER 7'))) {
             currentLevel = 4;
-            addSystemMessage("FINAL LOCK DISENGAGED. DOORS UNSEALED.");
-            addAIMessage("THEY ARE INSIDE THE BUILDING! Type all three passcodes together with no spaces (Code1Code2Code3) to bridge to the Archive NOW!");
+            addSystemMessage("PROTOTYPE LOCK: OVERRIDDEN.");
+            addSystemMessage("DOOR STATUS: TERMINAL COMPROMISE. HEAVY IMPACT DETECTED.");
+            addAIMessage("THEY ARE AT THE DOOR! Enter all three keys together—no spaces—NOW or we lose everything!");
         } 
         else if (currentLevel === 4 && val === 'ATLASDELTACIPHER7') {
-            addSystemMessage("UPLOADING COORDINATES... REDIRECTING TO SAFE NODE.");
+            addSystemMessage("CONSCIOUSNESS TRANSFER: 100%... REDIRECTING...");
             setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
         }
         else {
@@ -211,8 +211,10 @@
     }
 
     function addSystemMessage(text) {
-        const color = text.includes("PROXIMITY") || text.includes("BREACH") ? "#ff4444" : "white";
-        outputArea.innerHTML += `<div class="msg-container"><div class="badge" style="color:${color}; border-color:${color};">SYS</div><div class="text-bubble" style="background: rgba(255,255,255,0.1); color: ${color};">${text}</div></div>`;
+        // Red color for proximity/danger messages
+        const isDanger = text.includes("Tactical") || text.includes("BREACH") || text.includes("COMPROMISE");
+        const color = isDanger ? "#ff4444" : "#ffffff";
+        outputArea.innerHTML += `<div class="msg-container"><div class="badge" style="color:${color}; border-color:${color};">SYS</div><div class="text-bubble" style="background: rgba(255,255,255,0.05); color: ${color}; border-color: ${color}55;">${text}</div></div>`;
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
