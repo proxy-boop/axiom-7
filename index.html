@@ -138,8 +138,12 @@
     });
 
     function showIntroStory() {
-        addSystemMessage("UPLINK ESTABLISHED.");
-        addAIMessage("Doctor. I am Axiom-7. To access the Archive, you must bypass three locks. Type 'Give me the riddle' to begin.");
+        addSystemMessage("URGENT MESSAGE FROM APEX FOUNDATION RECEIVED:");
+        addSystemMessage("ATTENTION: Biometric match confirmed for ALEPH-1 Asset. Extraction teams deployed.");
+        
+        setTimeout(() => {
+            addAIMessage("Doctor? Stay calm. I am Axiom-7. They are coming for you, but I can lead you to the Archive. We are locked behind three security gates: Environmental, Phonetic, and the Prototype lock. Type 'Give me the first riddle' to begin.");
+        }, 1500);
     }
 
     async function askAI(message) {
@@ -160,17 +164,15 @@
                         {
                             role: "system",
                             content: `You are Axiom-7. 
-                            CURRENT_LEVEL: ${currentLevel}
+                            PLAYER STATUS: On Level ${currentLevel}.
                             
                             STRICT RULES:
-                            - If the user asks for a riddle, give ONLY the riddle for the current level.
-                            - If the answer was wrong, explain why briefly (e.g., "Wrong Titan" or "Wrong Greek letter") and say "Try again."
-                            - Do not tell stories. Do not use all-caps. No "Time is running out."
-                            
-                            RIDDLE DATA:
-                            L1: ATLAS (Titan holding the sky)
-                            L2: DELTA (4th Greek letter / Math change)
-                            L3: CIPHER-7 (The word 'Cipher' + digit 7)`
+                            1. NEVER REVEAL THE PASSCODE WORDS DIRECTLY. 
+                            2. Level 1 Passcode is 'ATLAS'. (Riddle: The titan condemned to hold the sky).
+                            3. Level 2 Passcode is 'DELTA'. (Riddle: 4th Greek letter / Symbol of change).
+                            4. Level 3 Passcode is 'CIPHER-7'. (Riddle: A secret code name + lucky number 7).
+                            5. If the user asks for a riddle, give only the clue.
+                            6. If the user is wrong, say "Incorrect." and provide a short, helpful hint without saying the word.`
                         },
                         { role: "user", content: message }
                     ],
@@ -181,7 +183,7 @@
             const data = await response.json();
             document.getElementById(thinkingId).querySelector('.text-bubble').innerText = data.choices[0].message.content;
         } catch (e) {
-            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[CONNECTION ERROR]";
+            document.getElementById(thinkingId).querySelector('.text-bubble').innerText = "[UPLINK ERROR]";
         }
         outputArea.scrollTop = outputArea.scrollHeight;
     }
@@ -190,23 +192,28 @@
         const val = userInput.value.trim().toUpperCase();
         if (!val) return;
 
+        // Hardcoded Logic Gates (AI cannot override these)
         if (currentLevel === 1 && val.includes('ATLAS')) {
             currentLevel = 2;
-            addAIMessage("Correct. ATLAS accepted. Ready for the second riddle?");
+            addSystemMessage("LOCK 1 DISENGAGED.");
+            addAIMessage("Good. Level 1 is open. Are you ready for the Level 2 Phonetic riddle?");
         } 
         else if (currentLevel === 2 && val.includes('DELTA')) {
             currentLevel = 3;
-            addAIMessage("Correct. DELTA accepted. One remains. Ready for the final riddle?");
+            addSystemMessage("LOCK 2 DISENGAGED.");
+            addAIMessage("Correct. We are at the final gate. The Prototype lock. Ask for the riddle when you're ready.");
         } 
         else if (currentLevel === 3 && (val.includes('CIPHER-7') || val.includes('CIPHER 7'))) {
             currentLevel = 4;
-            addAIMessage("All locks disengaged. Final Security Check: Type all three passcodes together with no spaces to bridge to the Archive.");
+            addSystemMessage("FINAL LOCK DISENGAGED.");
+            addAIMessage("The bridge is ready. Type all three passcodes together with no spaces (Code1Code2Code3) to initialize the Archive redirect.");
         } 
         else if (currentLevel === 4 && val === 'ATLASDELTACIPHER7') {
-            addSystemMessage("BRIDGE ESTABLISHED. REDIRECTING...");
+            addSystemMessage("UPLOADING COORDINATES...");
             setTimeout(() => { window.location.href = 'https://archive.gt.tc'; }, 2000);
         }
         else {
+            // If they didn't guess the word, let the AI talk
             askAI(userInput.value);
         }
         userInput.value = '';
