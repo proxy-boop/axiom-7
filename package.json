@@ -1,0 +1,13 @@
+{
+  "name": "axiom7-terminal",
+  "version": "1.0.0",
+  "description": "AXIOM-7 Terminal - An ARG chat interface",
+  "main": "index.html",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": "18.x"
+  }
+}
