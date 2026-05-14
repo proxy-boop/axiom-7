@@ -1,6 +1,4 @@
 // api/groq.js - Vercel serverless function for Groq API calls
-const fetch = require('node-fetch');
-
 export default async (req, res) => {
     // Only allow POST requests
     if (req.method !== 'POST') {
