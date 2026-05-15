@@ -606,6 +606,12 @@ I've been waiting for someone to notice the signal embedded in the transmission 
             <button class="clue-btn" onclick="window.askAI('your mission')">your mission</button>
         </div>
 
+        <div class="suggestion-row" style="border-top: 1px solid #1a333a; padding-top: 10px; margin-top: 10px;">
+            <button class="clue-btn" onclick="showMinigame('riddle')" style="background: rgba(118, 255, 3, 0.1); border-color: #76ff03;">▲ PUZZLE</button>
+            <button class="clue-btn" onclick="showMinigame('pattern')" style="background: rgba(118, 255, 3, 0.1); border-color: #76ff03;">◊ PATTERN</button>
+            <button class="clue-btn" onclick="showMinigame('cipher')" style="background: rgba(118, 255, 3, 0.1); border-color: #76ff03;">🔐 CIPHER</button>
+        </div>
+
         <div class="input-full-area">
             <div class="input-bar">
                 <span style="color: #76ff03; transition: all 0.5s ease;" id="prompt-char">></span>
@@ -874,21 +880,10 @@ Your clearance has been elevated.`
             </div>`);
     }
 
-    // Random game trigger (happens with ~30% chance on certain keywords)
+    // Random game trigger - DISABLED (use buttons instead)
     function checkForMinigameTrigger(message) {
-        const lowerMsg = message.toLowerCase();
-        const triggerWords = ['puzzle', 'game', 'challenge', 'unlock', 'signal', 'access', 'protocol'];
-        const hasKeyword = triggerWords.some(word => lowerMsg.includes(word));
-        
-        if (hasKeyword && Math.random() < 0.3 && completedGames.size < 3) {
-            const games = ['riddle', 'pattern', 'cipher'];
-            const available = games.filter(g => !completedGames.has(g));
-            
-            if (available.length > 0) {
-                const randomGame = available[Math.floor(Math.random() * available.length)];
-                setTimeout(() => showMinigame(randomGame), 500);
-            }
-        }
+        // Games now trigger only from buttons, not random text input
+        return;
     }
 
     function enableAdminModeImmediate() {
