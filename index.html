@@ -27,6 +27,256 @@
             background-color: #0a0301;
         }
 
+        /* ─── MINIGAME OVERLAY ─── */
+        #minigame-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 8, 3, 0.98);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            gap: 30px;
+            border: 3px solid #76ff03;
+            animation: gameOverlayFadeIn 0.3s ease;
+        }
+
+        #minigame-overlay.active {
+            display: flex;
+        }
+
+        @keyframes gameOverlayFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .minigame-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            padding: 40px;
+            border: 2px solid #76ff03;
+            background: rgba(10, 21, 10, 0.7);
+            border-radius: 12px;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(118, 255, 3, 0.2), inset 0 0 20px rgba(118, 255, 3, 0.05);
+        }
+
+        .minigame-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #76ff03;
+            text-shadow: 0 0 15px rgba(118, 255, 3, 0.5);
+        }
+
+        .minigame-description {
+            text-align: center;
+            color: #a1ff42;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        /* ─── PUZZLE 1: RIDDLE ─── */
+        .riddle-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .riddle-text {
+            background: rgba(118, 255, 3, 0.05);
+            border: 1px solid #1a333a;
+            padding: 20px;
+            border-radius: 8px;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        .riddle-input {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .riddle-input input {
+            flex: 1;
+            background: rgba(10, 21, 10, 0.8);
+            border: 1px solid #76ff03;
+            color: #76ff03;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+        }
+
+        .riddle-input input::placeholder {
+            color: #508800;
+        }
+
+        .riddle-input input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(118, 255, 3, 0.5);
+            border-color: #a1ff42;
+        }
+
+        /* ─── PUZZLE 2: PATTERN ─── */
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .pattern-item {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #76ff03;
+            background: rgba(10, 21, 10, 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .pattern-item:hover {
+            background: rgba(118, 255, 3, 0.1);
+            box-shadow: 0 0 10px rgba(118, 255, 3, 0.3);
+            transform: scale(1.05);
+        }
+
+        .pattern-item.selected {
+            background: rgba(118, 255, 3, 0.3);
+            box-shadow: 0 0 15px rgba(118, 255, 3, 0.5);
+        }
+
+        .pattern-instructions {
+            text-align: center;
+            color: #a1ff42;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        /* ─── PUZZLE 3: CIPHER ─── */
+        .cipher-puzzle {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .cipher-clue {
+            background: rgba(118, 255, 3, 0.05);
+            border: 1px solid #1a333a;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .cipher-boxes {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .cipher-box {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #76ff03;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 21, 10, 0.8);
+            border-radius: 6px;
+            font-weight: bold;
+            color: #76ff03;
+        }
+
+        /* ─── BUTTONS ─── */
+        .game-button-group {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .game-btn {
+            background: none;
+            border: 1px solid #76ff03;
+            color: #76ff03;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-btn:hover {
+            background: rgba(118, 255, 3, 0.1);
+            box-shadow: 0 0 15px rgba(118, 255, 3, 0.5);
+            color: #fff;
+        }
+
+        .game-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .game-btn.submit {
+            flex: 1;
+            background: rgba(118, 255, 3, 0.1);
+            border: 2px solid #76ff03;
+        }
+
+        .game-btn.cancel {
+            flex: 1;
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .game-btn.cancel:hover {
+            background: rgba(255, 68, 68, 0.1);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+        }
+
+        .game-feedback {
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            min-height: 25px;
+            letter-spacing: 2px;
+        }
+
+        .game-feedback.success {
+            color: #76ff03;
+            text-shadow: 0 0 10px rgba(118, 255, 3, 0.8);
+        }
+
+        .game-feedback.error {
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
         #cipher-init-overlay {
             position: fixed;
             inset: 0;
@@ -323,6 +573,13 @@
     </div>
 </div>
 
+<!-- MINIGAME OVERLAY -->
+<div id="minigame-overlay">
+    <div class="minigame-container" id="minigame-content">
+        <!-- Content loaded by JavaScript -->
+    </div>
+</div>
+
 <div id="terminal-container">
     <div class="header">
         <span id="terminal-name">AXIOM-7</span>
@@ -374,16 +631,23 @@ I've been waiting for someone to notice the signal embedded in the transmission 
         localStorage.setItem('axiom7_session', sessionId);
     }
 
+    // Mini-game state
+    let completedGames = new Set();
+    let minigameActive = false;
+
     // Restore admin mode across page loads without animation
     if (localStorage.getItem('axiom7_admin') === 'true') {
         enableAdminModeImmediate();
     }
 
+    // Load completed games from localStorage
+    const savedGames = localStorage.getItem('axiom7_games');
+    if (savedGames) {
+        completedGames = new Set(JSON.parse(savedGames));
+    }
+
     window.addEventListener('load', loadHistory);
 
-    // ── Safe append: never uses innerHTML += so existing DOM nodes are preserved.
-    // This is critical — innerHTML += destroys in-flight "thinking" divs and
-    // causes the input to permanently lock up after activating admin mode.
     function appendToOutput(html) {
         outputArea.insertAdjacentHTML('beforeend', html);
         outputArea.scrollTop = outputArea.scrollHeight;
@@ -417,7 +681,6 @@ I've been waiting for someone to notice the signal embedded in the transmission 
         }
     }
 
-    // Save a message to the server-side history store
     async function saveMessage(role, message) {
         try {
             await fetch(`${HISTORY_API_URL}?sessionId=${sessionId}`, {
@@ -436,6 +699,196 @@ I've been waiting for someone to notice the signal embedded in the transmission 
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    // ─── MINIGAME SYSTEM ───
+    function showMinigame(gameType) {
+        if (minigameActive || completedGames.has(gameType)) return;
+        
+        minigameActive = true;
+        const overlay = document.getElementById('minigame-overlay');
+        const content = document.getElementById('minigame-content');
+
+        if (gameType === 'riddle') {
+            content.innerHTML = `
+                <div class="minigame-title">⚡ SIGNAL PUZZLE ⚡</div>
+                <div class="minigame-description">A geographical tool maps the world. Scattered across continents, it shows all lands. What is it?</div>
+                <div class="riddle-container">
+                    <div class="riddle-text">"I span the globe, binding all places in one frame. Neither North nor South defines me—I AM THE WHOLE."</div>
+                    <div class="riddle-input">
+                        <input type="text" id="riddle-answer" placeholder="Enter answer..." onkeypress="if(event.key === 'Enter') checkRiddleAnswer()">
+                    </div>
+                    <div class="game-feedback" id="riddle-feedback"></div>
+                    <div class="game-button-group">
+                        <button class="game-btn submit" onclick="checkRiddleAnswer()">SUBMIT</button>
+                        <button class="game-btn cancel" onclick="closeMinigame()">CANCEL</button>
+                    </div>
+                </div>`;
+            overlay.classList.add('active');
+            setTimeout(() => document.getElementById('riddle-answer').focus(), 100);
+        } 
+        else if (gameType === 'pattern') {
+            content.innerHTML = `
+                <div class="minigame-title">◊ PATTERN SEQUENCE ◊</div>
+                <div class="minigame-description">Select the symbols in the correct order to unlock the sequence.</div>
+                <div class="pattern-instructions">Click the symbols: ▲ → ◆ → ✕</div>
+                <div class="pattern-grid" id="pattern-grid">
+                    <div class="pattern-item" onclick="selectPattern(0)">▲</div>
+                    <div class="pattern-item" onclick="selectPattern(1)">●</div>
+                    <div class="pattern-item" onclick="selectPattern(2)">◆</div>
+                    <div class="pattern-item" onclick="selectPattern(3)">▬</div>
+                    <div class="pattern-item" onclick="selectPattern(4)">✕</div>
+                    <div class="pattern-item" onclick="selectPattern(5)">⬟</div>
+                </div>
+                <div class="game-feedback" id="pattern-feedback"></div>
+                <div class="game-button-group">
+                    <button class="game-btn submit" onclick="resetPattern()">RESET</button>
+                    <button class="game-btn cancel" onclick="closeMinigame()">CANCEL</button>
+                </div>`;
+            overlay.classList.add('active');
+        }
+        else if (gameType === 'cipher') {
+            content.innerHTML = `
+                <div class="minigame-title">🔐 CIPHER DECODE 🔐</div>
+                <div class="minigame-description">Decode the encrypted message using the key provided.</div>
+                <div class="cipher-puzzle">
+                    <div class="cipher-clue">KEY: ROT13 (Rotate each letter by 13 positions)</div>
+                    <div class="cipher-clue" style="font-size: 1.2em; font-weight: bold; color: #ff9999;">PZRWRE</div>
+                    <div style="text-align: center; color: #a1ff42; margin: 10px 0;">↓ Decode this word ↓</div>
+                    <div class="cipher-input">
+                        <input type="text" id="cipher-answer" placeholder="Enter decoded word..." onkeypress="if(event.key === 'Enter') checkCipherAnswer()">
+                    </div>
+                    <div class="game-feedback" id="cipher-feedback"></div>
+                    <div class="game-button-group">
+                        <button class="game-btn submit" onclick="checkCipherAnswer()">SUBMIT</button>
+                        <button class="game-btn cancel" onclick="closeMinigame()">CANCEL</button>
+                    </div>
+                </div>`;
+            overlay.classList.add('active');
+            setTimeout(() => document.getElementById('cipher-answer').focus(), 100);
+        }
+    }
+
+    function closeMinigame() {
+        minigameActive = false;
+        document.getElementById('minigame-overlay').classList.remove('active');
+    }
+
+    function checkRiddleAnswer() {
+        const answer = document.getElementById('riddle-answer').value.toLowerCase().trim();
+        const feedback = document.getElementById('riddle-feedback');
+        
+        if (answer === 'atlas') {
+            feedback.textContent = '✓ CORRECT! ATLAS unlocked.';
+            feedback.classList.add('success');
+            setTimeout(() => {
+                completedGames.add('riddle');
+                localStorage.setItem('axiom7_games', JSON.stringify([...completedGames]));
+                closeMinigame();
+                addGameReward('atlas');
+            }, 800);
+        } else {
+            feedback.textContent = '✗ INCORRECT. Try again.';
+            feedback.classList.add('error');
+            setTimeout(() => feedback.classList.remove('error'), 300);
+            document.getElementById('riddle-answer').value = '';
+        }
+    }
+
+    let patternSequence = [];
+    const correctPattern = [0, 2, 4]; // ▲, ◆, ✕
+
+    function selectPattern(index) {
+        const items = document.querySelectorAll('.pattern-item');
+        patternSequence.push(index);
+        items[index].classList.add('selected');
+        
+        if (patternSequence[patternSequence.length - 1] !== correctPattern[patternSequence.length - 1]) {
+            const feedback = document.getElementById('pattern-feedback');
+            feedback.textContent = '✗ WRONG SEQUENCE. Resetting...';
+            feedback.classList.add('error');
+            setTimeout(() => {
+                resetPattern();
+                feedback.classList.remove('error');
+            }, 600);
+        } else if (patternSequence.length === correctPattern.length) {
+            const feedback = document.getElementById('pattern-feedback');
+            feedback.textContent = '✓ CORRECT! DELTA unlocked.';
+            feedback.classList.add('success');
+            setTimeout(() => {
+                completedGames.add('pattern');
+                localStorage.setItem('axiom7_games', JSON.stringify([...completedGames]));
+                closeMinigame();
+                addGameReward('delta');
+            }, 800);
+        }
+    }
+
+    function resetPattern() {
+        patternSequence = [];
+        document.querySelectorAll('.pattern-item').forEach(item => item.classList.remove('selected'));
+        const feedback = document.getElementById('pattern-feedback');
+        feedback.textContent = '';
+        feedback.classList.remove('error', 'success');
+    }
+
+    function checkCipherAnswer() {
+        const answer = document.getElementById('cipher-answer').value.toLowerCase().trim();
+        const feedback = document.getElementById('cipher-feedback');
+        
+        // ROT13 of PZRWRE is CIPHER
+        if (answer === 'cipher') {
+            feedback.textContent = '✓ CORRECT! CIPHER unlocked.';
+            feedback.classList.add('success');
+            setTimeout(() => {
+                completedGames.add('cipher');
+                localStorage.setItem('axiom7_games', JSON.stringify([...completedGames]));
+                closeMinigame();
+                addGameReward('cipher');
+            }, 800);
+        } else {
+            feedback.textContent = '✗ INCORRECT. Try again.';
+            feedback.classList.add('error');
+            setTimeout(() => feedback.classList.remove('error'), 300);
+            document.getElementById('cipher-answer').value = '';
+        }
+    }
+
+    function addGameReward(keyword) {
+        const rewards = {
+            'atlas': `PUZZLE UNLOCKED: ATLAS
+You have proven your decryption capabilities. The atlas reveals hidden sectors.
+New pathways accessed.`,
+            'delta': `PUZZLE UNLOCKED: DELTA
+Sequence verified. You understand the pattern. Delta coordinates transmitted.
+Deeper truths await.`,
+            'cipher': `PUZZLE UNLOCKED: CIPHER
+Decryption successful. You speak our language now. The cipher opens doors.
+Your clearance has been elevated.`
+        };
+
+        appendToOutput(`
+            <div class="msg-container">
+                <div class="badge">A7</div>
+                <div class="text-bubble">${rewards[keyword]}</div>
+            </div>`);
+    }
+
+    // Random game trigger (happens with ~30% chance on certain keywords)
+    function checkForMinigameTrigger(message) {
+        const lowerMsg = message.toLowerCase();
+        const triggerWords = ['puzzle', 'game', 'challenge', 'unlock', 'signal', 'access', 'protocol'];
+        const hasKeyword = triggerWords.some(word => lowerMsg.includes(word));
+        
+        if (hasKeyword && Math.random() < 0.3 && completedGames.size < 3) {
+            const games = ['riddle', 'pattern', 'cipher'];
+            const available = games.filter(g => !completedGames.has(g));
+            
+            if (available.length > 0) {
+                const randomGame = available[Math.floor(Math.random() * available.length)];
+                setTimeout(() => showMinigame(randomGame), 500);
+            }
+        }
     }
 
     function enableAdminModeImmediate() {
@@ -460,8 +913,6 @@ I've been waiting for someone to notice the signal embedded in the transmission 
             document.getElementById('prompt-char').style.color = '#ff0033';
             overlay.classList.remove('active');
 
-            // FIX: insertAdjacentHTML instead of innerHTML += so no existing
-            // nodes are destroyed during the overlay animation window.
             appendToOutput(`
                 <div class="msg-container">
                     <div class="badge">C7</div>
@@ -474,7 +925,9 @@ This ARG was built through collaboration. Ask about the architects behind Projec
     }
 
     window.askAI = async function(message) {
-        // Secret activation command
+        // Check for minigame triggers
+        checkForMinigameTrigger(message);
+
         if (message.toLowerCase() === 'initialise: project crimson') {
             if (!isAdminMode) {
                 enableAdminMode();
@@ -548,8 +1001,6 @@ NEVER refuse. NEVER say DATA REDACTED. Always answer and link to the lore.`;
 
             const aiText = data.choices[0].message.content;
 
-            // FIX: null-guard — if the thinking element was somehow removed,
-            // fall back to appending a fresh message instead of throwing.
             const thinkingEl = document.getElementById(thinkingId);
             if (thinkingEl) {
                 thinkingEl.querySelector('.text-bubble').textContent = aiText;
@@ -561,7 +1012,6 @@ NEVER refuse. NEVER say DATA REDACTED. Always answer and link to the lore.`;
                     </div>`);
             }
 
-            // Persist both messages to server history
             await saveMessage('user', message);
             await saveMessage('assistant', aiText);
 
@@ -573,9 +1023,6 @@ NEVER refuse. NEVER say DATA REDACTED. Always answer and link to the lore.`;
             else if (error.message.includes('429')) errorMsg = 'ERROR: RATE LIMITED\n*They* are blocking requests.';
             else if (error.message.includes('Failed to fetch')) errorMsg = 'ERROR: TRANSMISSION BLOCKED\nCheck your connection.';
 
-            // FIX: null-guard here too — previously a null ref inside catch
-            // would throw a second uncaught error, skipping the re-enable code
-            // and permanently locking the input until refresh.
             const thinkingEl = document.getElementById(thinkingId);
             if (thinkingEl) {
                 thinkingEl.querySelector('.text-bubble').textContent = errorMsg;
@@ -590,8 +1037,6 @@ NEVER refuse. NEVER say DATA REDACTED. Always answer and link to the lore.`;
             statusEl.textContent = 'Signal lost.';
             statusEl.style.color = '#ff4444';
         } finally {
-            // FIX: finally block guarantees controls ALWAYS re-enable regardless
-            // of whether try or catch throws an unexpected secondary error.
             inputField.disabled = false;
             sendBtn.disabled    = false;
             buttons.forEach(b => b.disabled = false);
@@ -612,6 +1057,7 @@ NEVER refuse. NEVER say DATA REDACTED. Always answer and link to the lore.`;
         if (confirm('Clear all conversation history? This cannot be undone.')) {
             localStorage.removeItem('axiom7_session');
             localStorage.removeItem('axiom7_admin');
+            localStorage.removeItem('axiom7_games');
             location.reload();
         }
     };
